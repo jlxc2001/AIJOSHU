@@ -1,46 +1,33 @@
-# 高德车机语音助手 / AMapVoiceAssistant
+# 离线语音导航助手 / AMapVoiceAssistant Offline Paraformer
 
-这是一个给安卓车机用的最小可用语音助手 App。
+这是车机高德语音助手的离线识别版本。
 
-它的第一版目标：
+## 功能
 
-- 语音识别目的地
-- 自动提取“导航到 XXX”里的 XXX
-- 调起高德车机版
-- 使用你已经实测可用的接口：
+- 使用 sherpa-onnx
+- 使用 Paraformer 中文/英文流式模型
+- 本地离线识别，不依赖 Android 系统 SpeechRecognizer
+- 识别“导航到萍乡北站 / 我要去润达国际”等短句
+- 自动提取目的地
+- 调起高德车机版：
 
 ```text
 androidauto://keywordNavi?sourceApplication=高德地图&keywords=目的地&style=2
 ```
 
-## 已知前提
+## 重要说明
 
-你的车机高德包名是：
+项目源码里不直接放模型和 native so 文件，避免仓库太大。  
+GitHub Actions 会在编译时自动下载：
 
-```text
-com.autonavi.amapauto
-```
+- sherpa-onnx Android native libs
+- sherpa-onnx-streaming-paraformer-bilingual-zh-en 模型
 
-并且你已经用 ADB 测试通过：
+所以第一次编译会比较慢，APK 也会比较大。
 
-```bat
-adb shell "am start -W -a android.intent.action.VIEW -c android.intent.category.DEFAULT -d 'androidauto://keywordNavi?sourceApplication=高德地图&keywords=萍乡北站&style=2'"
-```
+## 上传到 GitHub
 
-## 使用方式
-
-打开 App 后可以：
-
-1. 点击「开始语音」
-2. 说：“导航到萍乡北站”
-3. App 会提取目的地“萍乡北站”
-4. 自动调起高德车机版的目的地页面
-
-也可以手动输入目的地，然后点「导航」。
-
-## GitHub 上传方式
-
-把这些文件夹/文件上传到你的 GitHub 仓库根目录：
+把这些文件上传到仓库根目录：
 
 ```text
 .github
@@ -48,30 +35,37 @@ app
 build.gradle.kts
 settings.gradle.kts
 README.md
+.gitignore
 ```
 
-上传后进入：
+然后运行：
 
 ```text
-Actions → Build Android APK → Run workflow
+Actions → Build Android Offline Paraformer APK → Run workflow
 ```
 
-打包完成后，在 Actions 的 Artifacts 里下载：
+构建完成后，从 Artifacts 下载：
 
 ```text
-AMapVoiceAssistant-debug-apk
+AMapVoiceAssistant-OfflineParaformer-debug-apk
 ```
 
-里面就是 APK。
+## 使用方式
 
-## 注意
+1. 安装 APK
+2. 打开 App
+3. 等待“模型加载完成”
+4. 点击“开始离线识别”
+5. 说：“导航到萍乡北站”
+6. 点击“停止并导航”
+7. App 会调起高德车机版并显示目标页面
 
-当前版本不自动点击“开始导航”按钮。  
-它只负责把目的地传给高德车机版，并显示导航目的地页面。
+## 当前限制
 
-如果后续需要自动点击开始导航，有两条路线：
+当前版本是“点击开始 → 说话 → 点击停止并导航”。  
+后续可以继续升级：
 
-1. 用无障碍服务识别“开始导航”按钮并点击
-2. 用高德 POI 查询把文字转成坐标，再调用 `androidauto://navi`
-
-第一版先保证“语音目的地 → 高德目的地页面”跑通。
+- 自动端点检测后直接导航
+- 加唤醒词“小初音”
+- 加语音播报
+- 加自动点击“开始导航”或改成坐标直达导航

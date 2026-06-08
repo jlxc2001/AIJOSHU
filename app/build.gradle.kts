@@ -1,5 +1,6 @@
 plugins {
     id("com.android.application")
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
@@ -10,7 +11,15 @@ android {
         applicationId = "com.jlxc.amapvoiceassistant"
         minSdk = 23
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "2.0-offline-paraformer"
     }
+
+    ndk {
+        abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
+    }
+}
+
+kotlin {
+    jvmToolchain(17)
 }

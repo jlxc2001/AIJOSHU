@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "AMapVoiceAssistant"
+rootProject.name = "AMapVoiceAssistantOffline"
 include(":app")

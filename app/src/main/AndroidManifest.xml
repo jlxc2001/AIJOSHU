@@ -14,22 +14,19 @@
 
     <application
         android:allowBackup="true"
+        android:label="离线语音导航助手"
         android:theme="@style/AppTheme"
-        android:label="高德语音助手"
-        android:usesCleartextTraffic="true"
-        android:resizeableActivity="true">
-
+        android:resizeableActivity="true"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:screenOrientation="landscape">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
     </application>
+
 </manifest>
